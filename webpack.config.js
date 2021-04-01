@@ -1,39 +1,19 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const base = require('./webpack.config.base.js')
 
 module.exports = {
+    ...base,
     mode: 'development',
-    entry: './src/index.js',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
     },
-    output: {
-        filename: '[name].[contenthash].js'
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'My App',
-            template: 'src/assets/index.html'
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css',
-            chunkFilename: '[id].[contenthash].css',
-            ignoreOrder: false, // Enable to remove warnings about conflicting order
-        })
-    ],
     module: {
         rules: [{
             test: /\.css$/i,
-            use: [{
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        publicPath: '../',
-                    },
-                },
-                'css-loader',
-            ],
+            use: ["style-loader", "css-loader"],
         }],
     }
 };
